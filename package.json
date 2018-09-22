@@ -1,0 +1,47 @@
+{
+  "comment": {
+    "scripts/watch": "这个配合webpack-dev-server，才可以自动刷新"
+  },
+  "name": "pixipro_jiaoda",
+  "version": "1.0.0",
+  "description": "应用",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "watch": "webpack --watch",
+    "start:dev": "webpack-dev-server --open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xm94630/pixiPro_jiaoda.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xm94630/pixiPro_jiaoda/issues"
+  },
+  "homepage": "https://github.com/xm94630/pixiPro_jiaoda#readme",
+  "devDependencies": {
+    "@babel/core": "^7.1.0",
+    "@babel/preset-env": "^7.1.0",
+    "babel-loader": "^8.0.2",
+    "clean-webpack-plugin": "^0.1.19",
+    "copy-webpack-plugin": "^4.5.2",
+    "css-loader": "^1.0.0",
+    "exports-loader": "^0.7.0",
+    "hot-module-replacement": "^3.0.1",
+    "html-webpack-plugin": "^4.0.0-alpha.2",
+    "http-server": "^0.11.1",
+    "less": "^3.8.1",
+    "less-loader": "^4.1.0",
+    "mini-css-extract-plugin": "^0.4.3",
+    "webpack": "^4.19.0",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.8"
+  },
+  "dependencies": {
+    "lodash": "^4.17.11",
+    "pixi.js": "^4.5.5"
+  }
+}

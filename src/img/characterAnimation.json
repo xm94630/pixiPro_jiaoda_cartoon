@@ -1,0 +1,26 @@
+{
+    "monster.json": {
+        "fly": [
+            "frame-1.png",
+            "frame-2.png",
+            "frame-3.png",
+            "frame-4.png"
+        ]
+    },
+    "button.json": {
+        "soundBtn": [
+            "icon-sound-on.png",
+            "icon-sound-off.png"
+        ]
+    },
+    "loadingBox.json": {
+        "loadingBox": [
+            "bar_1.png",
+            "bar_2.png",
+            "bar_3.png",
+            "bar_4.png",
+            "bar_5.png",
+            "bar_6.png"
+        ]
+    }
+}
