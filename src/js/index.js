@@ -99,35 +99,7 @@ WebFont.load({
   var stage3     = new PIXI.Container();
 
   //各个场景中的状态改变器：
-  function stage1_ticker(delta){
-
-    //通过名字引用小鸟，不过这个名字需要自己定义好，这样子使用起来非常方便
-    var niao = stage1.getChildByName('anim');
-    niao.x += delta*2;
-    if(niao.x> w+niao.width/2){
-      niao.x = 0-niao.width/2;
-    }
-
-
-    //【重要】缓动函数的原理 这是个重要的运用啊
-    //使用 Math.sin 会有神奇的效果
-    //之前我一直在思考如何实现，上下摆动的效果，我开始想到的是用 各种缓动函数 来实现。结果在看到别的案例的时候，发现这个 Math.sin 就是这样的一个函数。
-    //Math.sin可以产生-1~1之前摆动的数字，正好用上。
-    
-    //究其原理，就是，本身元素在固定间隔时间改变状态，主要是改变距离，因为时间间隔是相等的，所以产生的效果在视觉上就是匀速的
-    //只要能让每次修改状态的值不是固定的，我们就可以产生很多种效果，这里的sin就是这样子的函数。
-    //我甚至可以创建很多属于自己的缓动函数。
-    //而且这样子的函数可以常见很多不可思议、有趣的效果。
-    //可以自己写、也可以使用自己写的函数。我也恍然想起，我好像之前用函数式编程实现过这样子的函数。
-
-    //自己实现的小鸟步调
-    niao.y = birdSteps.perAdd();
-
-    //这里实现一个文字忽大忽小的功能（我称之为“跳蹦床“效果）
-    var controlBtn = stage1.getChildByName('controlBtn');
-    controlBtn.scale.x=controlBtn.scale.y = btnSteps.perAdd()
-    
-  }
+  function stage1_ticker(delta){}
   function stage2_ticker(){}
   function stage3_ticker(){}
 
@@ -144,98 +116,25 @@ WebFont.load({
     var bk = new PIXI.Sprite(res.background.texture)
     bk.height = h;
 
-    //创建标题文字
-    var title = new PIXI.Text('新交大群侠传',{
-      fontFamily: 'Arial',
-      fontSize: 100,
-      fontStyle: 'italic',
-      fontWeight: 'bold',
-      fill: ['#ffffff', '#00ff99'], // gradient
-      stroke: '#4a1850',
-      strokeThickness: 5,
-      dropShadow: true,
-      dropShadowColor: '#000000',
-      dropShadowBlur: 4,
-      dropShadowAngle: Math.PI / 6,
-      dropShadowDistance: 6,
-      wordWrap: true,
-      wordWrapWidth: 440
-    });
-    title.name = "logoFont";
-    title.resolution = 2;
-    title.anchor.set(.5)
-    //注意，这里被坑了下，官方demo是没有resize的，所以用 app.screen.width 是可以的
-    //其实我这里所有的定位，就根据最初的设定的w、h来进行处理就好
-    //或者把 resize(); 放在这里之后。
-    //title.x = app.screen.width/2;
-    title.x = w/2;
-    title.y = 150;
 
     //按钮文字1
-    var btn1 = new PIXI.Text('GAME Start',{
+    var btn1 = new PIXI.Text('观看',{
       //fontFamily:"Conv_monogram",
       fontFamily:"Conv_Minecraftia-Regular",
-      fontSize:32, 
+      fontSize:50, 
       padding:20
     });
     btn1.anchor.set(.5)
-    btn1.x = w/2;
-    btn1.y = 300;
+    btn1.x = w/2+300;
+    btn1.y = 1100;
     btn1.interactive = true;
     btn1.buttonMode = true;
     btn1.on('pointerdown', function(){
       app.stage = stage2;
     });
     
-    //按钮文字2
-    var btn2 = new PIXI.Text('Author 介绍',{
-      fontSize: 60
-    });
-    btn2.anchor.set(.5)
-    btn2.x = w/2;
-    btn2.y = 400;
-    btn2.interactive = true;
-    btn2.buttonMode = true;
-    btn2.on('pointerdown', function(){
-      app.stage = stage3;
-      //注意这里一定要写上这两组，否者声音会被多次添加
-      mySound.pause();
-      mySound.play();
-    });
-    btn2.on('mouseover', function(){
-      btn2.scale.x = 2;
-      btn2.scale.y = 2;
-    });
-    btn2.on('mouseout', function(){
-      btn2.scale.x = 1;
-      btn2.scale.y = 1;
-    });
 
-    //动画暂停/继续按钮
-    var btn3 = new PIXI.Text('stop',{fontSize: 60}); 
-    btn3.anchor.set(.5)
-    btn3.name = "controlBtn";
-    btn3.x = w/2;
-    btn3.y = 1000;
-    btn3.interactive = true;
-    btn3.buttonMode = true;
-    btn3.on('pointerdown', function(){
-
-      if(anim.playing){
-        //状态改变器切换成空
-        myTicker = function(){};
-        //小鸟动画停止
-        stage1.getChildByName('anim').stop();
-        //修改文字
-        btn3.setText("play")
-      }else{
-        //状态改变器切换成stage1_ticker
-        myTicker = stage1_ticker
-        //修改文字
-        btn3.setText("stop")
-        stage1.getChildByName('anim').play();
-      }
-    });
+    
 
     //声音暂停/继续按钮
     //var soundBtn = PIXI.Texture.fromFrame('icon-sound-on.png');//注意，如果只有单帧，不能用 PIXI.Texture.fromFrame
@@ -267,33 +166,10 @@ WebFont.load({
       }
     });
     
-
-    //创建影片  小鸟
-    var frames = [];
-
-    // for (var i = 0; i < n; i++) {
-    //     frames.push(PIXI.Texture.fromFrame('frame-' + (i+1) + '.png'));
-    // }
-
-    //使用这个写法代替上述写法，具有很好的维护性
-    for (var i = 0; i < characterAnimation['monster.json']['fly'].length; i++) {
-        frames.push(PIXI.Texture.fromFrame( characterAnimation['monster.json']['fly'][i] ));
-    }
-
-    var anim = new PIXI.extras.AnimatedSprite(frames);
-    anim.x = 100;
-    anim.name="anim"; //起一个名字方便以后引用
-    anim.y = app.screen.height / 2;
-    anim.anchor.set(0.5);
-    anim.animationSpeed = 0.25
-    anim.play();
-    //这个有点像flash中的实现
-    //anim.gotoAndStop(2);
-
     
 
     //场景（容器）添加元素
-    stage1.addChild(bk,title,btn1,btn2,btn3,anim,soundBtns);
+    stage1.addChild(bk,btn1,soundBtns);
   }
 
   //场景2绘制
@@ -358,7 +234,7 @@ WebFont.load({
   PIXI.loader
     //优先加载一部分用来基础显示，然后再慢慢加载别的
     .add("characterAnimation", "./img/characterAnimation.json") 
-    .add("background", "./img/background.png")
+    .add("background", "./img/bg.png")
     .add("loadingBox", "./img/loader.json")
     .load(function(xxx,res){
 
