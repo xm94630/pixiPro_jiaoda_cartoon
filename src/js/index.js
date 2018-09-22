@@ -386,16 +386,13 @@ WebFont.load({
 
         //入口2
         sounds.load([
-          "sounds/music.wav",
-          "sounds/splash.wav",
-          "sounds/faerieFM.mp3",
-          "sounds/alleySpectre.mp3"
+          "sounds/bgm.mp3",
         ]);
     });
 
   sounds.whenLoaded = function(){
     //播放背景音乐（但是不会在手机中触发，手机中需要在点击中触发的，所以我要找一个地方来触发下，比如“开始游戏按钮”之类）
-    mySound = sounds['sounds/faerieFM.mp3']
+    mySound = sounds['sounds/bgm.mp3']
     mySound.loop = true; //其他属性设置可以参考官网（注意区分sound.js、soundJS，我们是前者）
     mySound.play(); //这个在手机上第一次的时候并不会被触发
     //mySound.playFrom(0); //控制具体从哪里开始播放
