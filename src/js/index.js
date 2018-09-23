@@ -275,7 +275,7 @@ WebFont.load({
 
     //资源加载
     PIXI.loader
-      .add("monster", "./img/monster.json")
+      .add("btn", "./img/btn.json")
       .add("buttons", "./img/buttons.json")
       .load(setup);
   };
