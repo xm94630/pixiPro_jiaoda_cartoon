@@ -79,86 +79,97 @@ var stage1     = new PIXI.Container();
 var stage2     = new PIXI.Container();
 
 
+function getAllMaterial(res){
+  return {
+    bk:(function(){
+      //创建背景图片
+      var bk = new PIXI.Sprite(res.background.texture)
+      bk.height = h;
+      return bk;
+    })(),
+    btn1:(function(){
+      //按钮文字1
+      var btn1 = new PIXI.Text('观看',{
+        //fontFamily:"Conv_monogram",
+        fontFamily:"Conv_Minecraftia-Regular",
+        fontSize:50, 
+        padding:20
+      });
+      btn1.anchor.set(.5)
+      btn1.x = w/2+300;
+      btn1.y = 1100;
+      btn1.interactive = true;
+      btn1.buttonMode = true;
+      btn1.on('pointerdown', function(){
+        app.stage = stage2;
+      });
+      return btn1;
+    })(),
+    soundBtns:(function(){
+      //声音暂停/继续按钮
+      //var soundBtn = PIXI.Texture.fromFrame('icon-sound-on.png');//注意，如果只有单帧，不能用 PIXI.Texture.fromFrame
+      //var soundBtn = PIXI.Sprite.fromImage('icon-sound-on.png'); //单帧用这个。
+      //这里用影片剪辑来实现
+      var soundBtn = PIXI.Texture.fromFrame('icon-sound-on.png');
+      var soundBtnFrames=[];
+      for (var i = 0; i < characterAnimation['button.json']['soundBtn'].length; i++) {
+        soundBtnFrames.push(PIXI.Texture.fromFrame( characterAnimation['button.json']['soundBtn'][i] ));
+      }
+      var soundBtns = new PIXI.extras.AnimatedSprite(soundBtnFrames);
+      soundBtns.x = w-soundBtns.width/2-30;
+      soundBtns.y = soundBtns.height/2+30;
+      soundBtns.anchor.set(0.5);
+      soundBtns.gotoAndStop(0); //就像flash一样控制影片剪辑
+      soundBtns.interactive = true;
+      soundBtns.buttonMode = true;
+      soundBtns.scale.x = soundBtns.scale.y = 1.5;//放大一点，方便点击
+      var flag = false;
+      soundBtns.on('pointerdown', function(){
+        if(flag){
+          soundBtns.gotoAndStop(0);
+          mySound.play();
+          flag = false;
+        }else{
+          soundBtns.gotoAndStop(1);
+          mySound.pause();
+          flag = true;
+        }
+      });
+      return soundBtns;
+    })(),
+    btn:(function(){
+      var btn = new PIXI.Text('游戏开始',{
+        fontSize: 60,
+        fill: 0x000,
+        align: 'left'
+      });
+      btn.anchor.set(.5)
+      btn.x = w/2;
+      btn.y = 200;
+      btn.interactive = true;
+      btn.buttonMode = true;
+      return btn;
+    })(),
+
+  }
+}
+
+
 
 
 
 //场景1绘制
 function stage1_layout(res){
-  stage1.removeChildren(0, stage1.children.length); 
-
-  //创建背景图片
-  var bk = new PIXI.Sprite(res.background.texture)
-  bk.height = h;
-
-
-  //按钮文字1
-  var btn1 = new PIXI.Text('观看',{
-    //fontFamily:"Conv_monogram",
-    fontFamily:"Conv_Minecraftia-Regular",
-    fontSize:50, 
-    padding:20
-  });
-  btn1.anchor.set(.5)
-  btn1.x = w/2+300;
-  btn1.y = 1100;
-  btn1.interactive = true;
-  btn1.buttonMode = true;
-  btn1.on('pointerdown', function(){
-    app.stage = stage2;
-  });
-  
-
-  
-
-  //声音暂停/继续按钮
-  //var soundBtn = PIXI.Texture.fromFrame('icon-sound-on.png');//注意，如果只有单帧，不能用 PIXI.Texture.fromFrame
-  //var soundBtn = PIXI.Sprite.fromImage('icon-sound-on.png'); //单帧用这个。
-  //这里用影片剪辑来实现
-  var soundBtn = PIXI.Texture.fromFrame('icon-sound-on.png');
-  var soundBtnFrames=[];
-  for (var i = 0; i < characterAnimation['button.json']['soundBtn'].length; i++) {
-    soundBtnFrames.push(PIXI.Texture.fromFrame( characterAnimation['button.json']['soundBtn'][i] ));
-  }
-  var soundBtns = new PIXI.extras.AnimatedSprite(soundBtnFrames);
-  soundBtns.x = w-soundBtns.width/2-30;
-  soundBtns.y = soundBtns.height/2+30;
-  soundBtns.anchor.set(0.5);
-  soundBtns.gotoAndStop(0); //就像flash一样控制影片剪辑
-  soundBtns.interactive = true;
-  soundBtns.buttonMode = true;
-  soundBtns.scale.x = soundBtns.scale.y = 1.5;//放大一点，方便点击
-  var flag = false;
-  soundBtns.on('pointerdown', function(){
-    if(flag){
-      soundBtns.gotoAndStop(0);
-      mySound.play();
-      flag = false;
-    }else{
-      soundBtns.gotoAndStop(1);
-      mySound.pause();
-      flag = true;
-    }
-  });
-  
-  
-
-  //场景（容器）添加元素
+  const{bk,btn1,soundBtns} = getAllMaterial(res);
+  stage1.removeChildren(0, stage1.children.length);
   stage1.addChild(bk,btn1,soundBtns);
 }
 
 //场景2绘制
 function stage2_layout(res){   
-    var btn = new PIXI.Text('游戏开始',{
-      fontSize: 60,
-      fill: 0x000,
-      align: 'left'
-    });
-    btn.anchor.set(.5)
-    btn.x = w/2;
-    btn.y = 200;
-    btn.interactive = true;
-    btn.buttonMode = true;
-    stage2.addChild(btn);
+  const{btn} = getAllMaterial(res);
+  stage2.removeChildren(0, stage2.children.length);
+  stage2.addChild(btn);
 }
 
 
