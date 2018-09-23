@@ -17,7 +17,7 @@ WebFont.load({custom: {families: ['Conv_monogram','Conv_Minecraftia-Regular']}})
 
 
 /********************************************************************
- * 函数定义                                                          *
+ * resize                                                          *
  ********************************************************************/
 function resize(){
   var ratio = Math.min(window.innerWidth/w,window.innerHeight/h);
@@ -37,58 +37,43 @@ function resize(){
 
 
 /********************************************************************
- * 实例创建                                                          *
+ * 游戏实例创建                                                          *
  ********************************************************************/
 var w = 750;
 var h = 1200;
 var mySound;
-
-//所有动画json文件的控制
-var characterAnimation = null;
-//核心函数，用于app.ticker的回调之中
 var myTicker = function(){}
-
-//创建实例
 var app = new PIXI.Application({width:w,height: h,backgroundColor:0xffffff});
 app.view.style.position = "absolute";
 app.view.style.display = "block";
+app.ticker.add(function(delta) {myTicker(delta);});
 document.body.appendChild(app.view);
-
 //屏幕适配
 resize();
 
-app.ticker.add(function(delta) {
-  myTicker(delta);
-});
-
 
 
 /********************************************************************
- * ticker                                                          *
+ * 场景布局                                                          *
  ********************************************************************/
-function stage1_ticker(delta){}
-function stage2_ticker(delta){}
-
-
-
-/********************************************************************
- * 容器、元素、绘制函数                                                *
- ********************************************************************/
-
 var stage1     = new PIXI.Container();
 var stage2     = new PIXI.Container();
 
-
 function getAllMaterial(res){
+  //这个配置文件是对所有动画json文件的维护，使用起来非常方便
+  var characterAnimation = res['characterAnimation'].data;
   return {
-    bk:(function(){
+    bgImg:function(){
       //创建背景图片
-      var bk = new PIXI.Sprite(res.background.texture)
-      bk.height = h;
-      return bk;
-    })(),
-    btn1:(function(){
-      //按钮文字1
+      var bgImg = new PIXI.Sprite(res.background.texture)
+      bgImg.height = h;
+      return bgImg;
+    },
+    // viewBtn:function(){
+    //   var bgImg;
+    //   return viewBtn;
+    // },
+    btn1:function(){
       var btn1 = new PIXI.Text('观看',{
         //fontFamily:"Conv_monogram",
         fontFamily:"Conv_Minecraftia-Regular",
@@ -104,11 +89,8 @@ function getAllMaterial(res){
         app.stage = stage2;
       });
       return btn1;
-    })(),
-    soundBtns:(function(){
-      //声音暂停/继续按钮
-      //var soundBtn = PIXI.Texture.fromFrame('icon-sound-on.png');//注意，如果只有单帧，不能用 PIXI.Texture.fromFrame
-      //var soundBtn = PIXI.Sprite.fromImage('icon-sound-on.png'); //单帧用这个。
+    },
+    soundBtns:function(){
       //这里用影片剪辑来实现
       var soundBtn = PIXI.Texture.fromFrame('icon-sound-on.png');
       var soundBtnFrames=[];
@@ -119,10 +101,10 @@ function getAllMaterial(res){
       soundBtns.x = w-soundBtns.width/2-30;
       soundBtns.y = soundBtns.height/2+30;
       soundBtns.anchor.set(0.5);
-      soundBtns.gotoAndStop(0); //就像flash一样控制影片剪辑
+      soundBtns.gotoAndStop(0); 
       soundBtns.interactive = true;
       soundBtns.buttonMode = true;
-      soundBtns.scale.x = soundBtns.scale.y = 1.5;//放大一点，方便点击
+      soundBtns.scale.x = soundBtns.scale.y = 1.5;
       var flag = false;
       soundBtns.on('pointerdown', function(){
         if(flag){
@@ -136,8 +118,8 @@ function getAllMaterial(res){
         }
       });
       return soundBtns;
-    })(),
-    btn:(function(){
+    },
+    btn:function(){
       var btn = new PIXI.Text('游戏开始',{
         fontSize: 60,
         fill: 0x000,
@@ -149,49 +131,8 @@ function getAllMaterial(res){
       btn.interactive = true;
       btn.buttonMode = true;
       return btn;
-    })(),
-
-  }
-}
-
-
-
-
-
-//场景1绘制
-function stage1_layout(res){
-  const{bk,btn1,soundBtns} = getAllMaterial(res);
-  stage1.removeChildren(0, stage1.children.length);
-  stage1.addChild(bk,btn1,soundBtns);
-}
-
-//场景2绘制
-function stage2_layout(res){   
-  const{btn} = getAllMaterial(res);
-  stage2.removeChildren(0, stage2.children.length);
-  stage2.addChild(btn);
-}
-
-
-
-
-
-//入口1
-PIXI.loader
-  //优先加载一部分用来基础显示，然后再慢慢加载别的
-  .add("characterAnimation", "./img/characterAnimation.json") 
-  .add("background", "./img/bg.png")
-  .add("loadingBox", "./img/loader.json")
-  .load(function(xxx,res){
-
-      //这个配置文件是对所有动画json文件的维护，使用起来非常方便
-      characterAnimation = res['characterAnimation'].data;
-
-      //创建背景图片
-      var bk =PIXI.Sprite.fromImage("background")
-      bk.height = h;
-
-      //创建进度条动画
+    },
+    loadingBox:function(){
       var frames = [];
       for (var i = 0; i < characterAnimation['loadingBox.json']['loadingBox'].length; i++) {
           frames.push(PIXI.Texture.fromFrame( characterAnimation['loadingBox.json']['loadingBox'][i] ));
@@ -203,56 +144,77 @@ PIXI.loader
       loadingBox.anchor.set(0.5);
       loadingBox.animationSpeed = 0.25
       loadingBox.play();
-      
-      app.stage.addChild(bk,loadingBox);
+      return loadingBox;
+    },
 
-      //入口2
-      sounds.load([
-        "sounds/bgm.mp3",
-      ]);
+  }
+}
+//场景布局1
+function stage1_layout(res){
+  const{bgImg,btn1,soundBtns} = getAllMaterial(res);
+  stage1.removeChildren(0, stage1.children.length);
+  stage1.addChild(bgImg(),btn1(),soundBtns());
+}
+//场景布局2
+function stage2_layout(res){   
+  const{btn} = getAllMaterial(res);
+  stage2.removeChildren(0, stage2.children.length);
+  stage2.addChild(btn());
+}
+
+
+
+/********************************************************************
+ * ticker                                                          *
+ ********************************************************************/
+function stage1_ticker(delta){}
+function stage2_ticker(delta){}
+
+
+
+/********************************************************************
+ * 游戏入口                                                          *
+ ********************************************************************/
+//这部分逻辑后期可以优化成promise，代码更加优美
+PIXI.loader
+  .add("characterAnimation", "./img/characterAnimation.json") 
+  .add("background", "./img/bg.png")
+  .add("loadingBox", "./img/loader.json")
+  .load(function(xxx,res){
+    //优先加载一部分图片，用来做资源加载页
+    const{bgImg,loadingBox} = getAllMaterial(res);
+    app.stage.addChild(bgImg(),loadingBox());
+    //加载声音
+    sounds.load([
+      "sounds/bgm.mp3",
+    ]);
   });
 
 sounds.whenLoaded = function(){
-  //播放背景音乐（但是不会在手机中触发，手机中需要在点击中触发的，所以我要找一个地方来触发下，比如“开始游戏按钮”之类）
   mySound = sounds['sounds/bgm.mp3']
-  mySound.loop = true; //其他属性设置可以参考官网（注意区分sound.js、soundJS，我们是前者）
-  mySound.play(); //这个在手机上第一次的时候并不会被触发
-  //mySound.playFrom(0); //控制具体从哪里开始播放
-
-  //资源加载
+  mySound.loop = true;
+  mySound.play();
+  //剩余资源加载
   PIXI.loader
     .add("btn", "./img/btn.json")
     .add("buttons", "./img/buttons.json")
     .load(setup);
 };
 
-//加载后回调
-function setup(xxx,res) {
 
-  //完成3个容器进行布局
+
+/********************************************************************
+ * 游戏主体逻辑部分                                                    *
+ ********************************************************************/
+function setup(xxx,res) {
+  //场景布局（创建容器）
   stage1_layout(res);
   stage2_layout(res);
-
-  
-  //把容器1进行展示
-  //app.stage.addChild(stage1);
+  //舞台显示 (容器挂载)
   app.stage = stage1;
-  //使用容器1对应的“状态改变器”
+  //使用场景对应的ticker
   myTicker = stage1_ticker;
-  
-
-
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -262,5 +224,28 @@ function setup(xxx,res) {
 window.addEventListener('resize', resize);
 console.log('=======>')
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //这个已经被取缔了。以后使用 PIXI.settings.SCALE_MODE 
 //PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
+
+
+
+//这两个等效
+//var bgImg = PIXI.Sprite.fromImage("background")
+//var bgImg = new PIXI.Sprite(res.background.texture)
