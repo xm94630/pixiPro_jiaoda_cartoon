@@ -11,49 +11,17 @@ import T from './tool/tweenFun.js';
 
 //因为sounds的方法有对其的依赖(另外这个sound.js在npm库中也是有的，可惜也不是模块化的，所以就用这个吧)
 window.loadSound = loadSound;
-
-WebFont.load({
-  custom: {
-    families: ['Conv_monogram','Conv_Minecraftia-Regular'] 
-  }
-});
+//字体下载
+WebFont.load({custom: {families: ['Conv_monogram','Conv_Minecraftia-Regular']}});
 
 
-var w = 750;
-var h = 1200;
-var mySound;
-
-//所有动画json文件的控制
-var characterAnimation = null;
-
-
-//这个是很重要的一个函数，用于 app.ticker 之中。
-//当 myTicker 赋予不同的处理函数的时候，就会对对应的函数处理
-//而不被处理的内容，状态就不会被改变，就好像被“暂停了”一样
-//所以所谓的“暂停”，无非就是某个场景的状态不被改变而已。
-//我之前在研究“faerieFM”的暂停的时候，一直找不到“暂停”的操作，后来一一排查，才恍然大悟！
-var myTicker = function(){}
-//另外，这里一开始设置的是一个空函数，有的案例中，直接有内容的，会导致一上来就执行这个回调
-//如果函数体中引用了没有赋值的元素就会出错，所以这种情况下，可用用 app.stop 来停止主帧的播放，需要的时候start就行
-
-//创建实例
-var app = new PIXI.Application({width:w,height: h,backgroundColor:0xffffff});
-app.view.style.position = "absolute";
-app.view.style.display = "block";
-document.body.appendChild(app.view);
-window.addEventListener('resize', resize);
+/********************************************************************
+ * 函数定义                                                          *
+ ********************************************************************/
 function resize(){
-  //缩放
   var ratio = Math.min(window.innerWidth/w,window.innerHeight/h);
-  //这个是解决缩放后文字变模糊的核心所在，之前的用法是错误的！
   app.view.style.width = Math.ceil(w * ratio) + "px";
   app.view.style.height = Math.ceil(h * ratio) + "px";
-  //app.renderer.resize(Math.ceil(w * ratio),Math.ceil(h * ratio));
-  //所有的场景也要缩放
-  //stage1.scale.x = stage1.scale.y = ratio;
-  //stage2.scale.x = stage2.scale.y = ratio;
-  //stage3.scale.x = stage3.scale.y = ratio;
-  
   //居中
   var ratio2 = w/h;
   if(window.innerWidth/window.innerHeight>w/h){
@@ -64,10 +32,32 @@ function resize(){
     app.view.style.top = (window.innerHeight-window.innerWidth/ratio2)/2+'px'
   }
 }
+
+
+
+/********************************************************************
+ * 全局变量                                                          *
+ ********************************************************************/
+var w = 750;
+var h = 1200;
+var mySound;
+
+//所有动画json文件的控制
+var characterAnimation = null;
+//核心函数，用于app.ticker的回调之中
+var myTicker = function(){}
+
+//创建实例
+var app = new PIXI.Application({width:w,height: h,backgroundColor:0xffffff});
+app.view.style.position = "absolute";
+app.view.style.display = "block";
+document.body.appendChild(app.view);
+
+//屏幕适配
 resize();
 
-//这个已经被取缔了。以后使用 PIXI.settings.SCALE_MODE 
-//PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
+
+
 
 app.ticker.add(function(delta) {
   myTicker(delta);
@@ -168,45 +158,6 @@ function stage2_layout(res){
     stage2.addChild(btn);
 }
 
-//场景3绘制
-function stage3_layout(res){
-
-  // 如果加上下面这些，stage3被多次调用有重置场景的效果。看情况使用
-  // stage3 = new PIXI.Container();
-  // resize();
-  
-  var btn = new PIXI.Text('作者是一个画家，如果这里文字很长很长很长，我需要会折行的文字',{
-    //下面三行是实现文字折行的重要配置
-    //谷歌搜索 pixi text 查得 => https://pixijs.io/pixi-text-style/#
-    "breakWords": true,
-    "wordWrapWidth": w,
-    "wordWrap": true
-  });
-  btn.anchor.set(.5)
-  btn.x = w/2;
-  btn.y = 200;
-  btn.interactive = true;
-  btn.buttonMode = true;
-
-  var btn2 = new PIXI.Text('返回首页',{
-    fontSize: 60,
-    fill: 0x000,
-    align: 'left'
-  });
-  btn2.anchor.set(.5)
-  btn2.x = w/2;
-  btn2.y = 400;
-  btn2.interactive = true;
-  btn2.buttonMode = true;
-  btn2.on('pointerdown', function(){
-    //如果再次调用这个布局函数的话，会进行重新布局，这样子，之前的动画啥的，就被清空了
-    stage1_layout(res)
-    
-    app.stage = stage1;
-  });
-  stage3.addChild(btn);
-  stage3.addChild(btn2);
-}
 
 
 
@@ -267,7 +218,7 @@ function setup(xxx,res) {
   //完成3个容器进行布局
   stage1_layout(res);
   stage2_layout(res);
-  stage3_layout(res);
+
   
   //把容器1进行展示
   //app.stage.addChild(stage1);
@@ -299,3 +250,25 @@ function setup(xxx,res) {
 // 容器的这个cacheAsBitmap属性设置为true的话，内容的元素就会不随时间的推移而改变，换句话说，就是状态就不会再发生变化了（表现为相对静止状态）
 
 console.log('=======>')
+
+
+
+
+
+
+
+
+/********************************************************************
+ * 事件绑定                                                          *
+ ********************************************************************/
+window.addEventListener('resize', resize);
+
+
+
+
+
+
+
+
+//这个已经被取缔了。以后使用 PIXI.settings.SCALE_MODE 
+//PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
