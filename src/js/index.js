@@ -42,6 +42,7 @@ function resize(){
 var w = 750;
 var h = 1200;
 var mySound;
+var nPage = 1; //第几页
 var myTicker = function(){}
 var app = new PIXI.Application({width:w,height: h,backgroundColor:0xffffff});
 app.view.style.position = "absolute";
@@ -58,20 +59,16 @@ resize();
  ********************************************************************/
 var stage0 = new PIXI.Container();//加载
 var stage1 = new PIXI.Container();
-var stage2 = new PIXI.Container();
+var stage2 = new PIXI.Container(); 
+stage1.name = "stage1"
+stage2.name = "stage2"
 
 function getAllMaterial(res){
   //这个配置文件是对所有动画json文件的维护，使用起来非常方便
   var characterAnimation = res['characterAnimation'].data;
-  return {
+  var list = {
     bgImg:function(){
-      var img = new PIXI.Sprite(res.background.texture)
-      img.height = h;
-      return img;
-    },
-    page01Img:function(){
-      var img = new PIXI.Sprite(res.page01.texture)
-      img.height = h;
+      var img = new PIXI.Sprite(res.background.texture);
       return img;
     },
     viewBtnMC:function(){
@@ -137,7 +134,10 @@ function getAllMaterial(res){
       mc.buttonMode = true;
       mc.scale.x = mc.scale.y = 1;
       mc.on('pointerdown', function(){
-        alert(1)
+        nPage++;
+        var bookMC = stage2.getChildByName('book');
+        bookMC.removeChildren(0, bookMC.children.length);
+        bookMC.addChild(list.pageMC(nPage));
       });
       return mc;
     },
@@ -156,7 +156,10 @@ function getAllMaterial(res){
       mc.buttonMode = true;
       mc.scale.x = mc.scale.y = 1;
       mc.on('pointerdown', function(){
-        alert(2)
+        nPage--;
+        var bookMC = stage2.getChildByName('book');
+        bookMC.removeChildren(0, bookMC.children.length);
+        bookMC.addChild(list.pageMC(nPage));
       });
       return mc;
     },
@@ -173,9 +176,21 @@ function getAllMaterial(res){
       txt.buttonMode = true;
       return txt;
     },
-
-
+    page01Img:function(){var img = new PIXI.Sprite(res.page01.texture);img.name = "page01";return img;},
+    page02Img:function(){var img = new PIXI.Sprite(res.page02.texture);img.name = "page02";return img;},
+    bookMC:function(){
+      var mc = new PIXI.Container();
+      mc.name = "book";
+      mc.addChild(list.pageMC(1))
+      return mc;
+    },
+    pageMC:function(nPage){
+      var mc = PIXI.Sprite.fromImage("page0"+nPage);
+      mc.name = "page0"+nPage;
+      return mc;
+    }
   }
+  return list;
 }
 
 //加载声音前的loading场景
@@ -208,7 +223,6 @@ function stage0_layout(res){
 //场景布局1
 function stage1_layout(res){
   const{bgImg,soundBtnMC,viewBtnMC,page01Img} = getAllMaterial(res);
-  stage1.name = "stage1"
   stage1.removeChildren(0, stage1.children.length);
   stage1.addChild(
     bgImg(),
@@ -218,11 +232,16 @@ function stage1_layout(res){
 
 //场景布局2
 function stage2_layout(res){   
-  const{page01Img,prevBtnMC,nextBtnMC,soundBtnMC} = getAllMaterial(res);
-  stage2.name = "stage2"
+  const{
+    prevBtnMC,
+    nextBtnMC,
+    soundBtnMC,
+    bookMC,
+    pageMC,
+  } = getAllMaterial(res);
   stage2.removeChildren(0, stage2.children.length);
   stage2.addChild(
-    page01Img(),
+    bookMC(),
     nextBtnMC(),
     prevBtnMC(),
   );
@@ -245,7 +264,6 @@ PIXI.loader
   .add("characterAnimation", "./img/characterAnimation.json") 
   .add("background", "./img/bg.png")
   .add("loadingBox", "./img/loader.json")
-  .add("page01", "./img/page01.png")
   .load(function(xxx,res){
     //优先加载一部分图片，用来做资源加载页
     stage0_layout(res);
@@ -265,6 +283,8 @@ sounds.whenLoaded = function(){
   PIXI.loader
     .add("btn", "./img/btn.json")
     .add("buttons", "./img/buttons.json")
+    .add("page01", "./img/page01.png")
+    .add("page02", "./img/page02.png")
     .load(setup);
 };
 
