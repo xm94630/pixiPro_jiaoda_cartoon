@@ -56,8 +56,9 @@ resize();
 /********************************************************************
  * 场景布局                                                          *
  ********************************************************************/
-var stage1     = new PIXI.Container();
-var stage2     = new PIXI.Container();
+var stage0 = new PIXI.Container();//加载
+var stage1 = new PIXI.Container();
+var stage2 = new PIXI.Container();
 
 function getAllMaterial(res){
   //这个配置文件是对所有动画json文件的维护，使用起来非常方便
@@ -88,7 +89,11 @@ function getAllMaterial(res){
       mc.buttonMode = true;
       mc.on('pointerdown', function(){
         //舞台切换场景
-        app.stage = stage2;
+        app.stage.addChild(stage2);
+        app.stage.removeChild(
+          app.stage.getChildByName('stage0'),
+          app.stage.getChildByName('stage1')
+        )
       });
       return mc;
     },
@@ -135,8 +140,7 @@ function getAllMaterial(res){
       mc.buttonMode = true;
       mc.scale.x = mc.scale.y = 1;
       mc.on('pointerdown', function(){
-        //舞台切换场景
-        app.stage = stage2;
+
       });
       return mc;
     },
@@ -155,8 +159,7 @@ function getAllMaterial(res){
       mc.buttonMode = true;
       mc.scale.x = mc.scale.y = 1;
       mc.on('pointerdown', function(){
-        //舞台切换场景
-        app.stage = stage2;
+
       });
       return mc;
     },
@@ -179,7 +182,7 @@ function getAllMaterial(res){
 }
 
 //加载声音前的loading场景
-function stageBeforeLoading_layout(res){
+function stage0_layout(res){
   var characterAnimation = res['characterAnimation'].data;
   //进度条
   var sourceArr = characterAnimation['loadingBox.json']['loadingBox'];
@@ -188,7 +191,7 @@ function stageBeforeLoading_layout(res){
       frames.push(PIXI.Texture.fromFrame( sourceArr[i] ));
   }
   var mc = new PIXI.extras.AnimatedSprite(frames);
-  mc.name="loadingBoxm";
+  mc.name="loadingBox";
   mc.x = w / 2;
   mc.y = h / 2;
   mc.anchor.set(0.5);
@@ -197,16 +200,23 @@ function stageBeforeLoading_layout(res){
   //背景图
   var img = new PIXI.Sprite(res.background.texture)
   img.height = h;
-  app.stage.addChild(mc,img);
+
+  stage0.name = "stage0"
+  stage0.zOrder = 999;
+  stage0.removeChildren(0, stage0.children.length);
+  stage0.addChild(
+    img,mc
+  );
 }
 
 //场景布局1
 function stage1_layout(res){
   const{bgImg,soundBtnMC,viewBtnMC,page01Img} = getAllMaterial(res);
+  stage1.name = "stage1"
   stage1.removeChildren(0, stage1.children.length);
+  stage1.zOrder = 888;
   stage1.addChild(
     bgImg(),
-    soundBtnMC(),
     viewBtnMC(),
   );
 }
@@ -214,7 +224,9 @@ function stage1_layout(res){
 //场景布局2
 function stage2_layout(res){   
   const{page01Img,prevBtnMC,nextBtnMC,soundBtnMC} = getAllMaterial(res);
+  stage2.name = "stage2"
   stage2.removeChildren(0, stage2.children.length);
+  stage2.zOrder = 111;
   stage2.addChild(
     page01Img(),
     nextBtnMC(),
@@ -242,7 +254,9 @@ PIXI.loader
   .add("page01", "./img/page01.png")
   .load(function(xxx,res){
     //优先加载一部分图片，用来做资源加载页
-    stageBeforeLoading_layout(res);
+    stage0_layout(res);
+    app.stage.addChild(stage0);
+
     //加载声音
     sounds.load([
       "sounds/bgm.mp3",
@@ -266,11 +280,12 @@ sounds.whenLoaded = function(){
  * 游戏主体逻辑部分                                                    *
  ********************************************************************/
 function setup(xxx,res) {
+  const{soundBtnMC} = getAllMaterial(res);
   //场景布局（创建容器）
   stage1_layout(res);
   stage2_layout(res);
   //舞台显示 (容器挂载)
-  app.stage = stage1;
+  app.stage.addChild(stage1,soundBtnMC());
   //使用场景对应的ticker
   myTicker = stage1_ticker;
 }
@@ -282,31 +297,3 @@ function setup(xxx,res) {
  ********************************************************************/
 window.addEventListener('resize', resize);
 console.log('=======>')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//这个已经被取缔了。以后使用 PIXI.settings.SCALE_MODE 
-//PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
-
-
-
-//这两个等效
-//var bgImg = PIXI.Sprite.fromImage("background")
-//var bgImg = new PIXI.Sprite(res.background.texture)
-
-//同一个mc实例只能被添加到一个容器中,,,
