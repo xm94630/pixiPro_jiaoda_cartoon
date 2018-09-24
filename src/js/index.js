@@ -43,6 +43,7 @@ var w = 750;
 var h = 1200;
 var mySound;
 var nPage = 1; //第几页
+var totalPage = 3;
 var myTicker = function(){}
 var app = new PIXI.Application({width:w,height: h,backgroundColor:0xffffff});
 app.view.style.position = "absolute";
@@ -135,10 +136,17 @@ function getAllMaterial(res){
       mc.scale.x = mc.scale.y = 1;
       mc.on('pointerdown', function(){
         nPage++;
+        if(nPage>=totalPage){
+          stage2.getChildByName('nextBtn').visible=false;
+        }else{
+          stage2.getChildByName('prevBtn').visible=true;
+          stage2.getChildByName('nextBtn').visible=true;
+        }
         var bookMC = stage2.getChildByName('book');
         bookMC.removeChildren(0, bookMC.children.length);
         bookMC.addChild(list.pageMC(nPage));
       });
+      mc.name="nextBtn"
       return mc;
     },
     prevBtnMC:function(){
@@ -157,10 +165,17 @@ function getAllMaterial(res){
       mc.scale.x = mc.scale.y = 1;
       mc.on('pointerdown', function(){
         nPage--;
+        if(nPage<=1){
+          stage2.getChildByName('prevBtn').visible=false;
+        }else{
+          stage2.getChildByName('prevBtn').visible=true;
+          stage2.getChildByName('nextBtn').visible=true;
+        }
         var bookMC = stage2.getChildByName('book');
         bookMC.removeChildren(0, bookMC.children.length);
         bookMC.addChild(list.pageMC(nPage));
       });
+      mc.name="prevBtn"
       return mc;
     },
     btn:function(){
@@ -285,6 +300,7 @@ sounds.whenLoaded = function(){
     .add("buttons", "./img/buttons.json")
     .add("page01", "./img/page01.png")
     .add("page02", "./img/page02.png")
+    .add("page03", "./img/page03.png")
     .load(setup);
 };
 
