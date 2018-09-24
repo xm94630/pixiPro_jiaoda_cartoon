@@ -191,15 +191,16 @@ function getAllMaterial(res){
 
   }
 }
+
 //场景布局1
 function stage1_layout(res){
-  const{bgImg,soundBtnMC,viewBtnMC,page01Img} = getAllMaterial(res);
+  const{bgImg,soundBtnMC,viewBtnMC,page01Img} = res;
   stage1.removeChildren(0, stage1.children.length);
   stage1.addChild(bgImg(),soundBtnMC(),viewBtnMC());
 }
 //场景布局2
 function stage2_layout(res){   
-  const{page01Img,prevBtnMC,nextBtnMC,soundBtnMC} = getAllMaterial(res);
+  const{page01Img,prevBtnMC,nextBtnMC,soundBtnMC} = res;
   stage2.removeChildren(0, stage2.children.length);
   stage2.addChild(
     page01Img(),
@@ -254,9 +255,11 @@ sounds.whenLoaded = function(){
  * 游戏主体逻辑部分                                                    *
  ********************************************************************/
 function setup(xxx,res) {
+  //获取所有的mc元素
+  const mcList = getAllMaterial(res);
   //场景布局（创建容器）
-  stage1_layout(res);
-  stage2_layout(res);
+  stage1_layout(mcList);
+  stage2_layout(mcList);
   //舞台显示 (容器挂载)
   app.stage = stage1;
   //使用场景对应的ticker
