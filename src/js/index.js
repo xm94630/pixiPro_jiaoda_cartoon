@@ -218,6 +218,24 @@ function getAllMaterial(res){
       txt.name="pageNumber"
       return txt;
     },
+    homeBtnMC:function(){
+      var mc = PIXI.Sprite.fromImage("icon-exit.png");
+      mc.x = mc.width/2+30;
+      mc.y = mc.height/2+30;
+      mc.anchor.set(0.5);
+      mc.interactive = true;
+      mc.buttonMode = true;
+      mc.scale.x = mc.scale.y = 1.5;
+      var flag = false;
+      mc.on('pointerdown', function(){
+        app.stage.getChildByName('stage1').visible = true;
+        app.stage.getChildByName('stage2').visible = false;
+        nPage=1;
+        stage2.getChildByName('prevBtn').visible=false;
+        stage2.getChildByName('nextBtn').visible=true;
+      });
+      return mc;
+    }
   }
   return list;
 }
@@ -268,6 +286,7 @@ function stage2_layout(res){
     bookMC,
     pageMC,
     pageNumberMC,
+    homeBtnMC,
   } = getAllMaterial(res);
   stage2.removeChildren(0, stage2.children.length);
   stage2.addChild(
@@ -275,6 +294,7 @@ function stage2_layout(res){
     nextBtnMC(),
     prevBtnMC(),
     pageNumberMC(),
+    homeBtnMC(),
   );
 }
 
