@@ -64,96 +64,91 @@ function getAllMaterial(res){
   var characterAnimation = res['characterAnimation'].data;
   return {
     bgImg:function(){
-      //创建背景图片
-      var bgImg = new PIXI.Sprite(res.background.texture)
-      bgImg.height = h;
-      return bgImg;
+      var img = new PIXI.Sprite(res.background.texture)
+      img.height = h;
+      return img;
     },
-    // viewBtn:function(){
-    //   var bgImg;
-    //   return viewBtn;
-    // },
-    btn1:function(){
-      var btn1 = new PIXI.Text('观看',{
-        //fontFamily:"Conv_monogram",
-        fontFamily:"Conv_Minecraftia-Regular",
-        fontSize:50, 
-        padding:20
-      });
-      btn1.anchor.set(.5)
-      btn1.x = w/2+300;
-      btn1.y = 1100;
-      btn1.interactive = true;
-      btn1.buttonMode = true;
-      btn1.on('pointerdown', function(){
-        app.stage = stage2;
-      });
-      return btn1;
-    },
-    soundBtns:function(){
-      //这里用影片剪辑来实现
-      var soundBtn = PIXI.Texture.fromFrame('icon-sound-on.png');
-      var soundBtnFrames=[];
-      for (var i = 0; i < characterAnimation['button.json']['soundBtn'].length; i++) {
-        soundBtnFrames.push(PIXI.Texture.fromFrame( characterAnimation['button.json']['soundBtn'][i] ));
+    viewBtnMC:function(){
+      var sourceArr = characterAnimation['button.json']['viewBtn'];
+      var frameArr=[];
+      for (var i = 0; i < sourceArr.length; i++) {
+        frameArr.push(PIXI.Texture.fromFrame( sourceArr[i] ));
       }
-      var soundBtns = new PIXI.extras.AnimatedSprite(soundBtnFrames);
-      soundBtns.x = w-soundBtns.width/2-30;
-      soundBtns.y = soundBtns.height/2+30;
-      soundBtns.anchor.set(0.5);
-      soundBtns.gotoAndStop(0); 
-      soundBtns.interactive = true;
-      soundBtns.buttonMode = true;
-      soundBtns.scale.x = soundBtns.scale.y = 1.5;
+      var mc = new PIXI.extras.AnimatedSprite(frameArr);
+      mc.x = w-mc.width/2-30;
+      mc.y = mc.height/2+230;
+      mc.anchor.set(0.5);
+      mc.gotoAndStop(0); 
+      mc.interactive = true;
+      mc.buttonMode = true;
+      mc.scale.x = mc.scale.y = 1.5;
+      mc.on('pointerdown', function(){});
+      return mc;
+    },
+    soundBtnMC:function(){
+      var sourceArr = characterAnimation['button.json']['soundBtn']
+      var frameArr=[];
+      for (var i = 0; i < sourceArr.length; i++) {
+        frameArr.push(PIXI.Texture.fromFrame( sourceArr[i] ));
+      }
+      var mc = new PIXI.extras.AnimatedSprite(frameArr);
+      mc.x = w-mc.width/2-30;
+      mc.y = mc.height/2+30;
+      mc.anchor.set(0.5);
+      mc.gotoAndStop(0); 
+      mc.interactive = true;
+      mc.buttonMode = true;
+      mc.scale.x = mc.scale.y = 1.5;
       var flag = false;
-      soundBtns.on('pointerdown', function(){
+      mc.on('pointerdown', function(){
         if(flag){
-          soundBtns.gotoAndStop(0);
+          mc.gotoAndStop(0);
           mySound.play();
           flag = false;
         }else{
-          soundBtns.gotoAndStop(1);
+          mc.gotoAndStop(1);
           mySound.pause();
           flag = true;
         }
       });
-      return soundBtns;
+      return mc;
     },
     btn:function(){
-      var btn = new PIXI.Text('游戏开始',{
+      var txt = new PIXI.Text('游戏开始',{
         fontSize: 60,
         fill: 0x000,
         align: 'left'
       });
-      btn.anchor.set(.5)
-      btn.x = w/2;
-      btn.y = 200;
-      btn.interactive = true;
-      btn.buttonMode = true;
-      return btn;
+      txt.anchor.set(.5)
+      txt.x = w/2;
+      txt.y = 200;
+      txt.interactive = true;
+      txt.buttonMode = true;
+      return txt;
     },
     loadingBox:function(){
+      var sourceArr = characterAnimation['loadingBox.json']['loadingBox'];
       var frames = [];
-      for (var i = 0; i < characterAnimation['loadingBox.json']['loadingBox'].length; i++) {
-          frames.push(PIXI.Texture.fromFrame( characterAnimation['loadingBox.json']['loadingBox'][i] ));
+      for (var i = 0; i < sourceArr.length; i++) {
+          frames.push(PIXI.Texture.fromFrame( sourceArr[i] ));
       }
-      var loadingBox = new PIXI.extras.AnimatedSprite(frames);
-      loadingBox.name="loadingBoxm";
-      loadingBox.x = w / 2;
-      loadingBox.y = h / 2;
-      loadingBox.anchor.set(0.5);
-      loadingBox.animationSpeed = 0.25
-      loadingBox.play();
-      return loadingBox;
+      var mc = new PIXI.extras.AnimatedSprite(frames);
+      mc.name="loadingBoxm";
+      mc.x = w / 2;
+      mc.y = h / 2;
+      mc.anchor.set(0.5);
+      mc.animationSpeed = 0.25
+      mc.play();
+      return mc;
     },
 
   }
 }
 //场景布局1
 function stage1_layout(res){
-  const{bgImg,btn1,soundBtns} = getAllMaterial(res);
+  const{bgImg,soundBtnMC,viewBtnMC} = getAllMaterial(res);
   stage1.removeChildren(0, stage1.children.length);
-  stage1.addChild(bgImg(),btn1(),soundBtns());
+  stage1.addChild(bgImg(),soundBtnMC(),viewBtnMC());
 }
 //场景布局2
 function stage2_layout(res){   

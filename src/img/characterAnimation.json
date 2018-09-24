@@ -11,6 +11,11 @@
         "soundBtn": [
             "icon-sound-on.png",
             "icon-sound-off.png"
+        ],
+        "viewBtn":[
+            "btn_01.png",
+            "btn_02.png",
+            "btn_03.png"
         ]
     },
     "loadingBox.json": {
