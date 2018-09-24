@@ -89,11 +89,9 @@ function getAllMaterial(res){
       mc.buttonMode = true;
       mc.on('pointerdown', function(){
         //舞台切换场景
-        app.stage.addChild(stage2);
-        app.stage.removeChild(
-          app.stage.getChildByName('stage0'),
-          app.stage.getChildByName('stage1')
-        )
+        app.stage.getChildByName('stage0').visible = false;
+        app.stage.getChildByName('stage1').visible = false;
+        app.stage.getChildByName('stage2').visible = true;
       });
       return mc;
     },
@@ -140,7 +138,7 @@ function getAllMaterial(res){
       mc.buttonMode = true;
       mc.scale.x = mc.scale.y = 1;
       mc.on('pointerdown', function(){
-
+        alert(1)
       });
       return mc;
     },
@@ -159,7 +157,7 @@ function getAllMaterial(res){
       mc.buttonMode = true;
       mc.scale.x = mc.scale.y = 1;
       mc.on('pointerdown', function(){
-
+        alert(2)
       });
       return mc;
     },
@@ -281,11 +279,13 @@ sounds.whenLoaded = function(){
  ********************************************************************/
 function setup(xxx,res) {
   const{soundBtnMC} = getAllMaterial(res);
+  soundBtnMC.zOrder=99999;
   //场景布局（创建容器）
   stage1_layout(res);
   stage2_layout(res);
   //舞台显示 (容器挂载)
-  app.stage.addChild(stage1,soundBtnMC());
+  stage2.visible=false;
+  app.stage.addChild(stage1,stage2,soundBtnMC());
   //使用场景对应的ticker
   myTicker = stage1_ticker;
 }
