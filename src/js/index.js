@@ -87,7 +87,8 @@ function getAllMaterial(res){
       mc.interactive = true;
       mc.buttonMode = true;
       mc.on('pointerdown', function(){
-        alert(123);
+        //舞台切换场景
+        app.stage = stage2;
       });
       return mc;
     },
@@ -116,6 +117,46 @@ function getAllMaterial(res){
           mySound.pause();
           flag = true;
         }
+      });
+      return mc;
+    },
+    nextBtnMC:function(){
+      var sourceArr = characterAnimation['button.json']['viewBtn'];
+      var frameArr=[];
+      for (var i = 0; i < sourceArr.length; i++) {
+        frameArr.push(PIXI.Texture.fromFrame( sourceArr[i] ));
+      }
+      var mc = new PIXI.extras.AnimatedSprite(frameArr);
+      mc.x = w-mc.width/2-20;
+      mc.y = h-mc.height/2-20;
+      mc.anchor.set(0.5);
+      mc.gotoAndStop(2); 
+      mc.interactive = true;
+      mc.buttonMode = true;
+      mc.scale.x = mc.scale.y = 1;
+      mc.on('pointerdown', function(){
+        //舞台切换场景
+        app.stage = stage2;
+      });
+      return mc;
+    },
+    prevBtnMC:function(){
+      var sourceArr = characterAnimation['button.json']['viewBtn'];
+      var frameArr=[];
+      for (var i = 0; i < sourceArr.length; i++) {
+        frameArr.push(PIXI.Texture.fromFrame( sourceArr[i] ));
+      }
+      var mc = new PIXI.extras.AnimatedSprite(frameArr);
+      mc.x = mc.width/2+20;
+      mc.y = h-mc.height/2-20;
+      mc.anchor.set(0.5);
+      mc.gotoAndStop(1); 
+      mc.interactive = true;
+      mc.buttonMode = true;
+      mc.scale.x = mc.scale.y = 1;
+      mc.on('pointerdown', function(){
+        //舞台切换场景
+        app.stage = stage2;
       });
       return mc;
     },
@@ -158,11 +199,15 @@ function stage1_layout(res){
 }
 //场景布局2
 function stage2_layout(res){   
-  const{btn} = getAllMaterial(res);
+  const{page01Img,prevBtnMC,nextBtnMC,soundBtnMC} = getAllMaterial(res);
   stage2.removeChildren(0, stage2.children.length);
-  stage2.addChild(btn());
+  stage2.addChild(
+    page01Img(),
+    nextBtnMC(),
+    prevBtnMC(),
+    soundBtnMC()
+  );
 }
-
 
 
 /********************************************************************
