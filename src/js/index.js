@@ -203,7 +203,21 @@ function getAllMaterial(res){
       var mc = PIXI.Sprite.fromImage("page0"+nPage);
       mc.name = "page0"+nPage;
       return mc;
-    }
+    },
+    pageNumberMC:function(){
+      var txt = new PIXI.Text( nPage+"/"+totalPage,{
+        fontSize: 30,
+        fill: 0xc3592f,
+        align: 'left'
+      });
+      txt.anchor.set(.5)
+      txt.x = w/2;
+      txt.y = 1100;
+      txt.interactive = true;
+      txt.buttonMode = true;
+      txt.name="pageNumber"
+      return txt;
+    },
   }
   return list;
 }
@@ -253,12 +267,14 @@ function stage2_layout(res){
     soundBtnMC,
     bookMC,
     pageMC,
+    pageNumberMC,
   } = getAllMaterial(res);
   stage2.removeChildren(0, stage2.children.length);
   stage2.addChild(
     bookMC(),
     nextBtnMC(),
     prevBtnMC(),
+    pageNumberMC(),
   );
 }
 
@@ -267,7 +283,9 @@ function stage2_layout(res){
  * ticker                                                          *
  ********************************************************************/
 function stage1_ticker(delta){}
-function stage2_ticker(delta){}
+function stage2_ticker(delta){
+  stage2.getChildByName('pageNumber').text = nPage+" / "+totalPage;
+}
 
 
 
@@ -320,7 +338,7 @@ function setup(xxx,res) {
   app.stage.getChildByName('stage1').visible = true;
   app.stage.getChildByName('stage2').visible = false;
   //使用场景对应的ticker
-  myTicker = stage1_ticker;
+  myTicker = stage2_ticker;
 }
 
 
