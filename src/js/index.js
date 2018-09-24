@@ -173,30 +173,43 @@ function getAllMaterial(res){
       txt.buttonMode = true;
       return txt;
     },
-    loadingBox:function(){
-      var sourceArr = characterAnimation['loadingBox.json']['loadingBox'];
-      var frames = [];
-      for (var i = 0; i < sourceArr.length; i++) {
-          frames.push(PIXI.Texture.fromFrame( sourceArr[i] ));
-      }
-      var mc = new PIXI.extras.AnimatedSprite(frames);
-      mc.name="loadingBoxm";
-      mc.x = w / 2;
-      mc.y = h / 2;
-      mc.anchor.set(0.5);
-      mc.animationSpeed = 0.25
-      mc.play();
-      return mc;
-    },
 
   }
 }
+
+//加载声音前的loading场景
+function stageBeforeLoading_layout(res){
+  var characterAnimation = res['characterAnimation'].data;
+  //进度条
+  var sourceArr = characterAnimation['loadingBox.json']['loadingBox'];
+  var frames = [];
+  for (var i = 0; i < sourceArr.length; i++) {
+      frames.push(PIXI.Texture.fromFrame( sourceArr[i] ));
+  }
+  var mc = new PIXI.extras.AnimatedSprite(frames);
+  mc.name="loadingBoxm";
+  mc.x = w / 2;
+  mc.y = h / 2;
+  mc.anchor.set(0.5);
+  mc.animationSpeed = 0.25
+  mc.play();
+  //背景图
+  var img = new PIXI.Sprite(res.background.texture)
+  img.height = h;
+  app.stage.addChild(mc,img);
+}
+
 //场景布局1
 function stage1_layout(res){
   const{bgImg,soundBtnMC,viewBtnMC,page01Img} = getAllMaterial(res);
   stage1.removeChildren(0, stage1.children.length);
-  stage1.addChild(bgImg(),soundBtnMC(),viewBtnMC());
+  stage1.addChild(
+    bgImg(),
+    soundBtnMC(),
+    viewBtnMC(),
+  );
 }
+
 //场景布局2
 function stage2_layout(res){   
   const{page01Img,prevBtnMC,nextBtnMC,soundBtnMC} = getAllMaterial(res);
@@ -228,8 +241,7 @@ PIXI.loader
   .add("page01", "./img/page01.png")
   .load(function(xxx,res){
     //优先加载一部分图片，用来做资源加载页
-    const{bgImg,loadingBox} = getAllMaterial(res);
-    app.stage.addChild(bgImg(),loadingBox());
+    stageBeforeLoading_layout(res);
     //加载声音
     sounds.load([
       "sounds/bgm.mp3",
