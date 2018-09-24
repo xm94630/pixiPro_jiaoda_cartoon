@@ -68,6 +68,11 @@ function getAllMaterial(res){
       img.height = h;
       return img;
     },
+    page01Img:function(){
+      var img = new PIXI.Sprite(res.page01.texture)
+      img.height = h;
+      return img;
+    },
     viewBtnMC:function(){
       var sourceArr = characterAnimation['button.json']['viewBtn'];
       var frameArr=[];
@@ -147,7 +152,7 @@ function getAllMaterial(res){
 }
 //场景布局1
 function stage1_layout(res){
-  const{bgImg,soundBtnMC,viewBtnMC} = getAllMaterial(res);
+  const{bgImg,soundBtnMC,viewBtnMC,page01Img} = getAllMaterial(res);
   stage1.removeChildren(0, stage1.children.length);
   stage1.addChild(bgImg(),soundBtnMC(),viewBtnMC());
 }
@@ -176,6 +181,7 @@ PIXI.loader
   .add("characterAnimation", "./img/characterAnimation.json") 
   .add("background", "./img/bg.png")
   .add("loadingBox", "./img/loader.json")
+  .add("page01", "./img/page01.png")
   .load(function(xxx,res){
     //优先加载一部分图片，用来做资源加载页
     const{bgImg,loadingBox} = getAllMaterial(res);
