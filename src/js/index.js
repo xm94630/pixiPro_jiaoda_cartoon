@@ -75,14 +75,15 @@ function getAllMaterial(res){
         frameArr.push(PIXI.Texture.fromFrame( sourceArr[i] ));
       }
       var mc = new PIXI.extras.AnimatedSprite(frameArr);
-      mc.x = w-mc.width/2-30;
-      mc.y = mc.height/2+230;
+      mc.x = w-mc.width/2-12;
+      mc.y = mc.height/2+892;
       mc.anchor.set(0.5);
       mc.gotoAndStop(0); 
       mc.interactive = true;
       mc.buttonMode = true;
-      mc.scale.x = mc.scale.y = 1.5;
-      mc.on('pointerdown', function(){});
+      mc.on('pointerdown', function(){
+        alert(123);
+      });
       return mc;
     },
     soundBtnMC:function(){
