@@ -89,7 +89,6 @@ function getAllMaterial(res){
       mc.buttonMode = true;
       mc.on('pointerdown', function(){
         //舞台切换场景
-        app.stage.getChildByName('stage0').visible = false;
         app.stage.getChildByName('stage1').visible = false;
         app.stage.getChildByName('stage2').visible = true;
       });
@@ -200,7 +199,6 @@ function stage0_layout(res){
   img.height = h;
 
   stage0.name = "stage0"
-  stage0.zOrder = 999;
   stage0.removeChildren(0, stage0.children.length);
   stage0.addChild(
     img,mc
@@ -212,7 +210,6 @@ function stage1_layout(res){
   const{bgImg,soundBtnMC,viewBtnMC,page01Img} = getAllMaterial(res);
   stage1.name = "stage1"
   stage1.removeChildren(0, stage1.children.length);
-  stage1.zOrder = 888;
   stage1.addChild(
     bgImg(),
     viewBtnMC(),
@@ -224,7 +221,6 @@ function stage2_layout(res){
   const{page01Img,prevBtnMC,nextBtnMC,soundBtnMC} = getAllMaterial(res);
   stage2.name = "stage2"
   stage2.removeChildren(0, stage2.children.length);
-  stage2.zOrder = 111;
   stage2.addChild(
     page01Img(),
     nextBtnMC(),
@@ -279,17 +275,17 @@ sounds.whenLoaded = function(){
  ********************************************************************/
 function setup(xxx,res) {
   const{soundBtnMC} = getAllMaterial(res);
-  soundBtnMC.zOrder=99999;
   //场景布局（创建容器）
   stage1_layout(res);
   stage2_layout(res);
   //舞台显示 (容器挂载)
-  stage2.visible=false;
+  app.stage.removeChild(app.stage.getChildByName('stage0')); //移除（后续不会再用）
   app.stage.addChild(stage1,stage2,soundBtnMC());
+  app.stage.getChildByName('stage1').visible = true;
+  app.stage.getChildByName('stage2').visible = false;
   //使用场景对应的ticker
   myTicker = stage1_ticker;
 }
-
 
 
 /********************************************************************
