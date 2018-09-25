@@ -43,7 +43,7 @@ var w = 750;
 var h = 1200;
 var mySound;
 var nPage = 1; //第几页
-var totalPage = 3;
+var totalPage = 22;
 var myTicker = function(){}
 var app = new PIXI.Application({width:w,height: h,backgroundColor:0xffffff});
 app.view.style.position = "absolute";
@@ -105,7 +105,7 @@ function getAllMaterial(res){
       mc.gotoAndStop(0); 
       mc.interactive = true;
       mc.buttonMode = true;
-      mc.scale.x = mc.scale.y = 1.5;
+      mc.scale.x = mc.scale.y = 1;
       var flag = false;
       mc.on('pointerdown', function(){
         if(flag){
@@ -200,8 +200,8 @@ function getAllMaterial(res){
       return mc;
     },
     pageMC:function(nPage){
-      var mc = PIXI.Sprite.fromImage("page0"+nPage);
-      mc.name = "page0"+nPage;
+      var mc = PIXI.Sprite.fromImage("page"+nPage);
+      mc.name = "page"+nPage;
       return mc;
     },
     pageNumberMC:function(){
@@ -225,7 +225,7 @@ function getAllMaterial(res){
       mc.anchor.set(0.5);
       mc.interactive = true;
       mc.buttonMode = true;
-      mc.scale.x = mc.scale.y = 1.5;
+      mc.scale.x = mc.scale.y = 1;
       var flag = false;
       mc.on('pointerdown', function(){
         app.stage.getChildByName('stage1').visible = true;
@@ -336,9 +336,29 @@ sounds.whenLoaded = function(){
   PIXI.loader
     .add("btn", "./img/btn.json")
     .add("buttons", "./img/buttons.json")
-    .add("page01", "./img/page01.png")
-    .add("page02", "./img/page02.png")
-    .add("page03", "./img/page03.png")
+    .add("page1", "./img/page1.png")
+    .add("page2", "./img/page2.png")
+    .add("page3", "./img/page3.png")
+    .add("page4", "./img/page4.png")
+    .add("page5", "./img/page5.png")
+    .add("page6", "./img/page6.png")
+    .add("page7", "./img/page7.png")
+    .add("page8", "./img/page8.png")
+    .add("page9", "./img/page9.png")
+    .add("page10", "./img/page10.png")
+    .add("page11", "./img/page11.png")
+    .add("page12", "./img/page12.png")
+    .add("page13", "./img/page13.png")
+    .add("page14", "./img/page14.png")
+    .add("page15", "./img/page15.png")
+    .add("page16", "./img/page16.png")
+    .add("page17", "./img/page17.png")
+    .add("page18", "./img/page18.png")
+    .add("page19", "./img/page19.png")
+    .add("page20", "./img/page20.png")
+    .add("page21", "./img/page21.png")
+    .add("page22", "./img/page22.png")
+
     .load(setup);
 };
 
