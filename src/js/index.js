@@ -234,6 +234,10 @@ function getAllMaterial(res){
         nPage=1;
         stage2.getChildByName('prevBtn').visible=false;
         stage2.getChildByName('nextBtn').visible=true;
+        //复位
+        var bookMC = stage2.getChildByName('book');
+        bookMC.removeChildren(0, bookMC.children.length);
+        bookMC.addChild(list.pageMC(nPage));
       });
       return mc;
     }
