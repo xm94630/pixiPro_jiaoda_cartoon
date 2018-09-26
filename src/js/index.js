@@ -14,8 +14,6 @@ window.loadSound = loadSound;
 //字体下载
 WebFont.load({custom: {families: ['Conv_monogram','Conv_Minecraftia-Regular']}});
 
-
-
 /********************************************************************
  * resize                                                          *
  ********************************************************************/

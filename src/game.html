@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0">
 <!-- 这meta的作用就是删除默认的苹果工具栏和菜单栏 -->
 <meta name="mobile-web-app-capable" content="yes">
+<meta property="og:image" content="img/300*300.png">
 <style>
     /* 字体放在这里比较稳妥，因为还应用了图片资源，需要css和img资源在对应的路径下。如果单独放到css文件中，就有点问题 */
     @font-face {
@@ -23,4 +24,6 @@
     }
 </style>
 
-<body></body>
+<body>
+    <div style="width:0px;height:0px;overflow:hidden;"><img src="img/300*300.png" alt=""></div>
+</body>
