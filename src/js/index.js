@@ -43,7 +43,7 @@ var w = 750;
 var h = 1200;
 var mySound;
 var nPage = 1; //第几页
-var totalPage = 22;
+var totalPage = 38;
 var myTicker = function(){}
 var app = new PIXI.Application({width:w,height: h,backgroundColor:0xffffff});
 app.view.style.position = "absolute";
@@ -176,6 +176,7 @@ function getAllMaterial(res){
         bookMC.addChild(list.pageMC(nPage));
       });
       mc.name="prevBtn"
+      mc.visible = false;
       return mc;
     },
     btn:function(){
@@ -358,6 +359,22 @@ sounds.whenLoaded = function(){
     .add("page20", "./img/page20.png")
     .add("page21", "./img/page21.png")
     .add("page22", "./img/page22.png")
+    .add("page23", "./img/page23.png")
+    .add("page24", "./img/page24.png")
+    .add("page25", "./img/page25.png")
+    .add("page26", "./img/page26.png")
+    .add("page27", "./img/page27.png")
+    .add("page28", "./img/page28.png")
+    .add("page29", "./img/page29.png")
+    .add("page30", "./img/page30.png")
+    .add("page31", "./img/page31.png")
+    .add("page32", "./img/page32.png")
+    .add("page33", "./img/page33.png")
+    .add("page34", "./img/page34.png")
+    .add("page35", "./img/page35.png")
+    .add("page36", "./img/page36.png")
+    .add("page37", "./img/page37.png")
+    .add("page38", "./img/page38.png")
 
     .load(setup);
 };
