@@ -40,6 +40,7 @@ function resize(){
 var w = 750;
 var h = 1200;
 var mySound;
+var progress;
 var nPage = 1; //第几页
 var totalPage = 38;
 var myTicker = function(){}
@@ -246,7 +247,7 @@ function getAllMaterial(res){
 //加载声音前的loading场景
 function stage0_layout(res){
   var characterAnimation = res['characterAnimation'].data;
-  //进度条
+  //进度条(图形)
   var sourceArr = characterAnimation['loadingBox.json']['loadingBox'];
   var frames = [];
   for (var i = 0; i < sourceArr.length; i++) {
@@ -259,6 +260,16 @@ function stage0_layout(res){
   mc.anchor.set(0.5);
   mc.animationSpeed = 0.25
   mc.play();
+  //进度条（文字）
+  var progressTextMC = new PIXI.Text(progress,{
+    fontSize: 60,
+    fill: 0x000,
+    align: 'left'
+  });
+  progressTextMC.anchor.set(.5)
+  progressTextMC.x = w/2;
+  progressTextMC.y = 700;
+  progressTextMC.name="progressText"
   //背景图
   var img = new PIXI.Sprite(res.background.texture)
   img.height = h;
@@ -266,8 +277,10 @@ function stage0_layout(res){
   stage0.name = "stage0"
   stage0.removeChildren(0, stage0.children.length);
   stage0.addChild(
-    img,mc
+    img,mc,progressTextMC
   );
+  //使用场景对应的ticker
+  myTicker = stage0_ticker;
 }
 
 //场景布局1
@@ -305,6 +318,9 @@ function stage2_layout(res){
 /********************************************************************
  * ticker                                                          *
  ********************************************************************/
+function stage0_ticker(delta){
+  stage0.getChildByName('progressText').text = progress;
+}
 function stage1_ticker(delta){}
 function stage2_ticker(delta){
   stage2.getChildByName('pageNumber').text = nPage+" / "+totalPage;
@@ -378,7 +394,11 @@ sounds.whenLoaded = function(){
     .add("page37", "./img/page37.png")
     .add("page38", "./img/page38.png")
 
-    .load(setup);
+    .load(setup)
+    .onProgress.add((myLoader,res) => {
+      progress = 'Loading...'+ myLoader.progress +'%';
+    });
+
 };
 
 
