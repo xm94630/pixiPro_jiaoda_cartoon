@@ -11,10 +11,13 @@ module.exports = {
   entry: {
     //polyfill:'babel-polyfill',  //如果要使用es7\es8这种，需要有这个
     tools:'./src/js/tool/tweenFun.js',
-    libs: [
-      './src/js/lib/sound.js',
-      './src/js/lib/webfontloader.js',
-    ],
+    
+    //这个就不要了
+    // libs: [
+    //   './src/js/lib/sound.js',
+    //   './src/js/lib/webfontloader.js',
+    // ],
+    
     main: './src/js/index.js',
   },
   output: {
