@@ -342,64 +342,55 @@ PIXI.loader
     stage0_layout(res);
     app.stage.addChild(stage0);
 
-    //"sounds/bgm.mp3"
-    ssss();
+    //剩余资源加载
+    PIXI.loader
+      .add("bgmSound","./sounds/bgm.mp3")
+      .add("btn", "./img/btn.json")
+      .add("buttons", "./img/buttons.json")
+      .add("page1", "./img/page1.png")
+      .add("page2", "./img/page2.png")
+      .add("page3", "./img/page3.png")
+      .add("page4", "./img/page4.png")
+      .add("page5", "./img/page5.png")
+      .add("page6", "./img/page6.png")
+      .add("page7", "./img/page7.png")
+      .add("page8", "./img/page8.png")
+      .add("page9", "./img/page9.png")
+      .add("page10", "./img/page10.png")
+      .add("page11", "./img/page11.png")
+      .add("page12", "./img/page12.png")
+      .add("page13", "./img/page13.png")
+      .add("page14", "./img/page14.png")
+      .add("page15", "./img/page15.png")
+      .add("page16", "./img/page16.png")
+      .add("page17", "./img/page17.png")
+      .add("page18", "./img/page18.png")
+      .add("page19", "./img/page19.png")
+      .add("page20", "./img/page20.png")
+      .add("page21", "./img/page21.png")
+      .add("page22", "./img/page22.png")
+      .add("page23", "./img/page23.png")
+      .add("page24", "./img/page24.png")
+      .add("page25", "./img/page25.png")
+      .add("page26", "./img/page26.png")
+      .add("page27", "./img/page27.png")
+      .add("page28", "./img/page28.png")
+      .add("page29", "./img/page29.png")
+      .add("page30", "./img/page30.png")
+      .add("page31", "./img/page31.png")
+      .add("page32", "./img/page32.png")
+      .add("page33", "./img/page33.png")
+      .add("page34", "./img/page34.png")
+      .add("page35", "./img/page35.png")
+      .add("page36", "./img/page36.png")
+      .add("page37", "./img/page37.png")
+      .add("page38", "./img/page38.png")
+      .load(setup)
+      .onProgress.add((myLoader,res) => {
+        progress = 'Loading...'+ Math.round(myLoader.progress) +'%';
+      });
   });
 
-function ssss(){
-
-
-  //剩余资源加载
-  PIXI.loader
-    .add("bgmSound","./sounds/bgm.mp3")
-
-    .add("btn", "./img/btn.json")
-    .add("buttons", "./img/buttons.json")
-    .add("page1", "./img/page1.png")
-    .add("page2", "./img/page2.png")
-    .add("page3", "./img/page3.png")
-    .add("page4", "./img/page4.png")
-    .add("page5", "./img/page5.png")
-    .add("page6", "./img/page6.png")
-    .add("page7", "./img/page7.png")
-    .add("page8", "./img/page8.png")
-    .add("page9", "./img/page9.png")
-    .add("page10", "./img/page10.png")
-    .add("page11", "./img/page11.png")
-    .add("page12", "./img/page12.png")
-    .add("page13", "./img/page13.png")
-    .add("page14", "./img/page14.png")
-    .add("page15", "./img/page15.png")
-    .add("page16", "./img/page16.png")
-    .add("page17", "./img/page17.png")
-    .add("page18", "./img/page18.png")
-    .add("page19", "./img/page19.png")
-    .add("page20", "./img/page20.png")
-    .add("page21", "./img/page21.png")
-    .add("page22", "./img/page22.png")
-    .add("page23", "./img/page23.png")
-    .add("page24", "./img/page24.png")
-    .add("page25", "./img/page25.png")
-    .add("page26", "./img/page26.png")
-    .add("page27", "./img/page27.png")
-    .add("page28", "./img/page28.png")
-    .add("page29", "./img/page29.png")
-    .add("page30", "./img/page30.png")
-    .add("page31", "./img/page31.png")
-    .add("page32", "./img/page32.png")
-    .add("page33", "./img/page33.png")
-    .add("page34", "./img/page34.png")
-    .add("page35", "./img/page35.png")
-    .add("page36", "./img/page36.png")
-    .add("page37", "./img/page37.png")
-    .add("page38", "./img/page38.png")
-
-    .load(setup)
-    .onProgress.add((myLoader,res) => {
-      progress = 'Loading...'+ myLoader.progress +'%';
-    });
-
-};
 
 
 
