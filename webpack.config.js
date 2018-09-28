@@ -4,6 +4,10 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const webpack = require('webpack')
+//这个工具就是之前鲈鱼弄的，我之前居然不知道是怎么回事..
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+
+
 
 const devMode = process.env.NODE_ENV !== 'production'
 
@@ -17,7 +21,7 @@ module.exports = {
     //   './src/js/lib/sound.js',
     //   './src/js/lib/webfontloader.js',
     // ],
-    
+
     main: './src/js/index.js',
   },
   output: {
@@ -59,7 +63,9 @@ module.exports = {
     ], {}),
 
     //HMR
-    new webpack.HotModuleReplacementPlugin({})
+    new webpack.HotModuleReplacementPlugin({}),
+    
+    new BundleAnalyzerPlugin({ analyzerPort: 8919 })
   ]
   
   //分开打包

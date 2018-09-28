@@ -37,6 +37,7 @@
     "less-loader": "^4.1.0",
     "mini-css-extract-plugin": "^0.4.3",
     "webpack": "^4.19.0",
+    "webpack-bundle-analyzer": "^3.0.2",
     "webpack-cli": "^3.1.0",
     "webpack-dev-server": "^3.1.8"
   },
