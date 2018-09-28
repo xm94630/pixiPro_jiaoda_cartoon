@@ -110,11 +110,11 @@ function getAllMaterial(res){
       mc.on('pointerdown', function(){
         if(flag){
           mc.gotoAndStop(0);
-          mySound.play();
+          mySound && mySound.play();
           flag = false;
         }else{
           mc.gotoAndStop(1);
-          mySound.stop();
+          mySound && mySound.stop();
           flag = true;
         }
       });
@@ -400,7 +400,7 @@ PIXI.loader
 function setup(xxx,res) {
 
   mySound = res.bgmSound.sound;
-  mySound.play();
+  mySound && mySound.play();
 
   const{soundBtnMC} = getAllMaterial(res);
   //场景布局（创建容器）
