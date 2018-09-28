@@ -3,14 +3,15 @@ import '../css/game.less';
 
 import _ from 'lodash';
 import * as PIXI from 'pixi.js'
+import 'pixi-sound'  //有依赖关系的是这样子引入的就行
 
 import WebFont from './lib/webfontloader.js';
-import {sounds,loadSound} from './lib/sound.js'
+
 
 import T from './tool/tweenFun.js';
 
-//因为sounds的方法有对其的依赖(另外这个sound.js在npm库中也是有的，可惜也不是模块化的，所以就用这个吧)
-window.loadSound = loadSound;
+
+
 //字体下载(本项目不使用字体)
 //WebFont.load({custom: {families: ['Conv_monogram','Conv_Minecraftia-Regular']}});
 
@@ -113,7 +114,7 @@ function getAllMaterial(res){
           flag = false;
         }else{
           mc.gotoAndStop(1);
-          mySound.pause();
+          mySound.stop();
           flag = true;
         }
       });
@@ -341,18 +342,17 @@ PIXI.loader
     stage0_layout(res);
     app.stage.addChild(stage0);
 
-    //加载声音
-    sounds.load([
-      "sounds/bgm.mp3",
-    ]);
+    //"sounds/bgm.mp3"
+    ssss();
   });
 
-sounds.whenLoaded = function(){
-  mySound = sounds['sounds/bgm.mp3']
-  mySound.loop = true;
-  mySound.play();
+function ssss(){
+
+
   //剩余资源加载
   PIXI.loader
+    .add("bgmSound","./sounds/bgm.mp3")
+
     .add("btn", "./img/btn.json")
     .add("buttons", "./img/buttons.json")
     .add("page1", "./img/page1.png")
@@ -407,6 +407,10 @@ sounds.whenLoaded = function(){
  * 游戏主体逻辑部分                                                    *
  ********************************************************************/
 function setup(xxx,res) {
+
+  mySound = res.bgmSound.sound;
+  mySound.play();
+
   const{soundBtnMC} = getAllMaterial(res);
   //场景布局（创建容器）
   stage1_layout(res);
