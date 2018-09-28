@@ -1,7 +1,7 @@
 import '../css/base.css';
 import '../css/game.less';
 
-import _ from 'lodash';
+//import _ from 'lodash'; //不使用就不会被打包，lodash文件太大，暂时不用了
 import * as PIXI from 'pixi.js'
 import 'pixi-sound'  //有依赖关系的是这样子引入的就行
 

@@ -91,7 +91,8 @@ module.exports = {
 
         //对特定的node_modules中的模块打包
         vendor: {
-          test: /[\\/]node_modules[\\/](pixi.js|lodash)[\\/]/,
+          //test: /[\\/]node_modules[\\/](pixi.js|lodash)[\\/]/,
+          test: /[\\/]node_modules[\\/](pixi.js|pixi-sound)[\\/]/, //如果这里匹配不到的依赖，就会被打包到main.bundle中
           name: 'vendor',
           chunks: 'all',
         }
@@ -130,11 +131,11 @@ module.exports = {
         ],
       }
 
-
-      ,{
-        test: require.resolve('./src/js/lib/sound.js'),
-        use: 'exports-loader?sounds,loadSound'  
-      }
+      //这个已经去了，先不删除这个用法，以后有用
+      // ,{
+      //   test: require.resolve('./src/js/lib/sound.js'),
+      //   use: 'exports-loader?sounds,loadSound'  
+      // }
 
       
     ]
