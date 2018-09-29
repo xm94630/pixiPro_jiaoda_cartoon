@@ -8,6 +8,7 @@ const { getIfUtils, removeEmpty } = require('webpack-config-utils');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 //这个工具就是之前鲈鱼弄的，我之前居然不知道是怎么回事..
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const CompressionPlugin = require('compression-webpack-plugin');
 
 
 module.exports = function(env){
@@ -71,8 +72,10 @@ module.exports = function(env){
       ifNotProd(
         new BundleAnalyzerPlugin({ analyzerPort: 9001 }),
         new BundleAnalyzerPlugin({ analyzerPort: 9002 })
-      )
+      ),
 
+      //生成.gz文件,不过我试了，不能直接用的，以后再说
+      //new CompressionPlugin()
     ]
     
     //分开打包
