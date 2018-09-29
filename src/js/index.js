@@ -13,7 +13,7 @@ import T from './tool/tweenFun.js';
 
 
 //字体下载(本项目不使用字体)
-//WebFont.load({custom: {families: ['Conv_monogram','Conv_Minecraftia-Regular']}});
+WebFont.load({custom: {families: ['monogram']}});
 
 /********************************************************************
  * resize                                                          *
@@ -209,7 +209,8 @@ function getAllMaterial(res){
       var txt = new PIXI.Text( nPage+"/"+totalPage,{
         fontSize: 30,
         fill: 0xc3592f,
-        align: 'left'
+        align: 'left',
+        fontFamily:'monogram',
       });
       txt.anchor.set(.5)
       txt.x = w/2;

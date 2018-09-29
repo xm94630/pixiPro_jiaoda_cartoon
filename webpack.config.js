@@ -57,8 +57,8 @@ module.exports = function(env){
       }),
       //拷贝
       new CopyWebpackPlugin([
-        { from: 'src/img/*',   to: 'img', flatten:true},
-        { from: 'src/fonts/*', to: 'fonts', flatten:true},
+        { from: 'src/img/*',   to: 'img', flatten:true}, //不需要原来的文件夹结构
+        { from: 'src/fonts/**', to: 'fonts', flatten:true},
         { from: 'src/sounds/*', to: 'sounds', flatten:true},
       ], {}),
   
