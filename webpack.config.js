@@ -106,7 +106,7 @@ module.exports = function(env){
   
           //对特定的node_modules中的模块打包
           vendor: {
-            //如果这里匹配不到的依赖，就会被打包到main.bundle中
+            //如果这里匹配不到的依赖，就会被打包到 main.bundle 中
             //所以下面这样子的写法，对于嵌套的组件依赖，会被打包到main.bundle（比如 pixi.js还依赖了resource-loader..）
             //这就是我之前一起好奇，为什么 main.bundle 被打包了一些莫名其妙的东西...
             //test: /[\\/]node_modules[\\/](pixi.js|pixi-sound)[\\/]/, 
