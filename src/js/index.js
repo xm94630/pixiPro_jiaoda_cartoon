@@ -331,6 +331,8 @@ function stage2_ticker(delta){
  * 游戏入口                                                          *
  ********************************************************************/
 //这部分逻辑后期可以优化成promise，代码更加优美
+//我已经尝试使用promise，似乎并不能在代码上进行优化，所以还是用这里的
+
 PIXI.loader
   .add("characterAnimation", "./img/characterAnimation.json") 
   .add("background", "./img/bg.png")
