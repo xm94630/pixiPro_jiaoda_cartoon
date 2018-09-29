@@ -1,19 +1,16 @@
 import '../css/base.css';
 import '../css/game.less';
 
-//import _ from 'lodash'; //不使用就不会被打包，lodash文件太大，暂时不用了
+import WebFont from 'webfontloader';
 import * as PIXI from 'pixi.js'
 import 'pixi-sound'  //有依赖关系的是这样子引入的就行
 
-import WebFont from 'webfontloader';
-
-
 import T from './tool/tweenFun.js';
 
-
-
-//字体下载(本项目不使用字体)
+//自定义字体加载
 WebFont.load({custom: {families: ['monogram']}});
+
+
 
 /********************************************************************
  * resize                                                          *
