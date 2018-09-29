@@ -5,7 +5,7 @@ import '../css/game.less';
 import * as PIXI from 'pixi.js'
 import 'pixi-sound'  //有依赖关系的是这样子引入的就行
 
-import WebFont from './lib/webfontloader.js';
+import WebFont from 'webfontloader';
 
 
 import T from './tool/tweenFun.js';
