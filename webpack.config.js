@@ -5,6 +5,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const webpack = require('webpack')
 const { getIfUtils, removeEmpty } = require('webpack-config-utils');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 //这个工具就是之前鲈鱼弄的，我之前居然不知道是怎么回事..
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
@@ -12,6 +13,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 module.exports = function(env){
   const { ifProd, ifNotProd } = getIfUtils(env);
   return  {
+    mode:ifNotProd("development","production"),
     entry: {
       //polyfill:'babel-polyfill',  //如果要使用es7\es8这种，需要有这个
       tools:'./src/js/tool/tweenFun.js',
@@ -28,7 +30,6 @@ module.exports = function(env){
       filename: '[name].bundle.js',
       path: path.resolve(__dirname, 'dist')
     },
-    mode:"development",
   
     //这个部分可以不写，默认就是这个 
     devServer: {
@@ -76,6 +77,12 @@ module.exports = function(env){
     
     //分开打包
     ,optimization: {
+      
+      //这个坑死我了，怎么弄也不行，有时候能把壳压缩下，自己的代码还是不能压缩，而且也不能混淆
+      //我参照uglify的官方网站，配了半天也搞不好，后来才发现关键是必须是“production”模式下！
+      minimize: true, //这个要有，坑死我了
+      minimizer: [new UglifyJsPlugin({})],  
+
       splitChunks: {
         cacheGroups: {
   
